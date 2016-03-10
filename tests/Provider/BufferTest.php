@@ -48,8 +48,8 @@ class BufferTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUrlUserDetails()
     {
-        $token = $this->getAccessToken('token');
-        $this->assertEquals($this->provider->getApiUrl() . '/user.json?access_token=token', $this->provider->getResourceOwnerDetailsUrl($token));
+        $token = $this->getAccessToken();
+        $this->assertEquals($this->provider->getApiUrl() . '/user.json', $this->provider->getResourceOwnerDetailsUrl($token));
     }
 
     public function testAuthorizationUrl()
@@ -97,10 +97,8 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
-     * @expectedException Tgallice\OAuth2\Client\Provider\Exception\BufferProviderException
-     *
-     **/
+     * @expectedException \Tgallice\OAuth2\Client\Provider\Exception\BufferProviderException
+     */
     public function testExceptionThrownWhenErrorObjectReceived()
     {
         $response = $this->prophesize(ResponseInterface::class);
@@ -117,12 +115,10 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param null $tokenValue
-     *
      * @return AccessToken
      */
-    private function getAccessToken($tokenValue = 'token')
+    private function getAccessToken()
     {
-        return new AccessToken(['access_token' => $tokenValue]);
+        return $this->prophesize(AccessToken::class)->reveal();
     }
 }

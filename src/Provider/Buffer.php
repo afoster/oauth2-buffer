@@ -4,11 +4,14 @@ namespace Tgallice\OAuth2\Client\Provider;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
+use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use Psr\Http\Message\ResponseInterface;
 use Tgallice\OAuth2\Client\Provider\Exception\BufferProviderException;
 
 class Buffer extends AbstractProvider
 {
+    use BearerAuthorizationTrait;
+
     /**
      * Buffer app base url
      *
@@ -51,7 +54,7 @@ class Buffer extends AbstractProvider
      */
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
-        return $this->getApiUrl() . '/user.json?access_token=' . $token;
+        return $this->getApiUrl() . '/user.json';
     }
 
     /**
@@ -70,16 +73,6 @@ class Buffer extends AbstractProvider
     protected function getDefaultScopes()
     {
         return [];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getAuthorizationHeaders($token = null)
-    {
-        return [
-            'Authorization' => 'Bearer '. (string) $token,
-        ];
     }
 
     /**
