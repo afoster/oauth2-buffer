@@ -12,9 +12,18 @@ use Tgallice\OAuth2\Client\Provider\Buffer;
 
 class FooBufferProvider extends Buffer
 {
+    private $ownerDetails;
+
+    public function __construct(array $options = [], array $ownerDetails = []) {
+
+        parent::__construct($options);
+
+        $this->ownerDetails = $ownerDetails;
+    }
+
     protected function fetchResourceOwnerDetails(AccessToken $token)
     {
-        return ['id' => 'buffer_user_id' , 'name' => 'user name'];
+        return $this->ownerDetails;
     }
 }
 
@@ -59,15 +68,19 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         parse_str($uri['query'], $query);
 
         $this->assertArrayHasKey('client_id', $query);
+        $this->assertArrayHasKey('redirect_uri', $query);
         $this->assertArrayHasKey('state', $query);
+        $this->assertArrayHasKey('scope', $query);
         $this->assertArrayHasKey('redirect_uri', $query);
         $this->assertArrayHasKey('response_type', $query);
+        $this->assertArrayHasKey('approval_prompt', $query);
         $this->assertNotNull($this->provider->getState());
     }
 
-    public function testGetUserData()
+    public function testGetResourceOwner()
     {
-        $provider = new FooBufferProvider($this->config);
+        $ownerData = ['id' => 'buffer_user_id' , 'name' => 'user name'];
+        $provider = new FooBufferProvider($this->config, $ownerData);
 
         $token = $this->getAccessToken();
         $bufferUser = $provider->getResourceOwner($token);
@@ -75,6 +88,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ResourceOwnerInterface::class, $bufferUser);
         $this->assertEquals('buffer_user_id', $bufferUser->getId());
         $this->assertEquals('user name', $bufferUser->getName());
+        $this->assertEquals($ownerData, $bufferUser->toArray());
     }
 
     public function testGetAccessToken()
