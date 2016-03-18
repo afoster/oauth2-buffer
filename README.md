@@ -3,6 +3,8 @@
 This package provides Buffer OAuth 2.0 support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
 [![Build Status](https://travis-ci.org/tgallice/oauth2-buffer.png?branch=master)](https://travis-ci.org/tgallice/oauth2-buffer)
+[![Code Coverage](https://scrutinizer-ci.com/g/tgallice/oauth2-buffer/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/tgallice/oauth2-buffer/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tgallice/oauth2-buffer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tgallice/oauth2-buffer/?branch=master)
 
 ## Installation
 
